@@ -4,6 +4,7 @@ import {
   Component,
   inject,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
@@ -47,6 +48,9 @@ import { AddMember } from './modal/add-member/add-member';
 export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
   private teamService = inject(TeamMemberService);
+
+  @ViewChild('memberModal')
+  memberModal!: AddMember;
 
   private readonly STORAGE_KEY = 'teamMembers';
 
@@ -172,7 +176,13 @@ export class DataTableComponent {
     console.log('open modal with id', id);
   }
 
-  addMember() {}
+  addMember() {
+    this.memberModal.openSheet('add', null);
+  }
+  editMember(id: string) {
+    console.log(id);
+    this.memberModal.openSheet('edit', id);
+  }
 
   // --- Pagination helpers ---
   protected getPageNumbers(): (number | string)[] {

@@ -33,6 +33,7 @@ export class TeamMemberService {
 
     const updated = [...current, newMember];
     this.members.set(updated);
+    console.log('addd done', updated);
     this.saveToStorage(updated);
   }
 

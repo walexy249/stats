@@ -1,5 +1,5 @@
-<hlm-dialog #modalRef>
-  <button id="edit-profile" brnDialogTrigger hlmBtn variant="outline">Open Dialog</button>
+<hlm-dialog #modalRef (stateChanged)="onSheetChange($event)">
+  <!-- <button id="edit-profile" brnDialogTrigger hlmBtn variant="outline">Open Dialog</button> -->
   <hlm-dialog-content class="sm:max-w-[425px] w-[425px] bg-white" *brnDialogContent="let ctx">
     <hlm-dialog-header>
       <h3 hlmDialogTitle>Add member</h3>

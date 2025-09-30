@@ -87,6 +87,7 @@
                     </button>
                     <button
                       class="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-gray-100"
+                      (click)="editMember(cellContent)"
                     >
                       <img src="/icons/edit.svg" alt="delete" />
                     </button>
@@ -157,4 +158,4 @@
   </button>
 </div>
 
-<app-add-member></app-add-member>
+<app-add-member #memberModal></app-add-member>

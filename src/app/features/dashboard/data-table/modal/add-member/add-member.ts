@@ -34,16 +34,42 @@ export class AddMember {
   private fb = inject(NonNullableFormBuilder);
   private teamMemberService = inject(TeamMemberService);
 
+  type!: any;
+  id: any;
   form: FormGroup = this.fb.group({
     name: [null, [Validators.required]],
     email: [null, [Validators.required]],
     role: [null, [Validators.required]],
   });
-  openSheet() {}
+  openSheet(type: 'add' | 'edit', id?: any) {
+    this.type = type;
+    if (this.type === 'edit') {
+      this.id = id;
+      const member = this.teamMemberService.getMemberById(id);
+      this.form.patchValue({
+        name: member?.name,
+        email: member?.email,
+        role: member?.role,
+      });
+    }
+    this.modalRef.open();
+  }
 
   onSubmit() {
     console.log(this.form.value);
-    this.teamMemberService.addMember(this.form.value);
-    // this.modalRef.close();
+    if (this.type === 'add') {
+      this.teamMemberService.addMember(this.form.value);
+    } else {
+      this.teamMemberService.updateMember(this.id, this.form.value);
+    }
+    this.modalRef.close();
+  }
+
+  onSheetChange(event: any) {
+    if (event === 'closed') {
+      this.form.reset();
+      this.id = null;
+      this.type = null;
+    }
   }
 }
