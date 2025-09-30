@@ -23,17 +23,8 @@ import {
   SortingState,
 } from '@tanstack/angular-table';
 import { CommonModule } from '@angular/common';
-
-export type TeamMember = {
-  id: string;
-  name: string;
-  avatar: string;
-  status: 'Active' | 'Inactive';
-  role: string;
-  email: string;
-  teams: string[];
-  extraTeams: number;
-};
+import { TeamMemberService } from '../../../shared/service/team-member.service';
+import { TeamMember } from '../../../shared/model/team-member.model';
 
 @Component({
   selector: 'app-data-table',
@@ -53,17 +44,11 @@ export type TeamMember = {
 })
 export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
+  private teamService = inject(TeamMemberService);
 
   private readonly STORAGE_KEY = 'teamMembers';
 
-  // BehaviorSubject to hold data
-  private readonly _dataSubject = new BehaviorSubject<TeamMember[]>(this.loadFromStorage());
-
-  data$ = this._dataSubject.asObservable();
-
-  constructor() {
-    this.saveToStorage(this._dataSubject.value);
-  }
+  constructor() {}
 
   protected readonly _availablePageSizes = [3, 10, 20, 50];
 
@@ -152,7 +137,7 @@ export class DataTableComponent {
     pageIndex: 0,
   });
 
-  data = signal<TeamMember[]>(this.loadFromStorage());
+  data = this.teamService.members;
 
   pagination = signal({
     pageIndex: 0,
@@ -175,24 +160,14 @@ export class DataTableComponent {
   }));
 
   // --- CRUD ---
+
+  // --- delegate actions to service ---
   deleteMember(id: string) {
-    this.data.update((d) => d.filter((m) => m.id !== id));
-    this.saveToStorage(this.data());
-    console.log('deleted');
+    this.teamService.deleteMember(id);
   }
 
   updateMember(id: string) {
-    console.log('Update logic here for member:', id);
-  }
-
-  // --- LocalStorage helpers ---
-  private saveToStorage(data: TeamMember[]) {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
-  }
-
-  private loadFromStorage(): TeamMember[] {
-    const saved = localStorage.getItem(this.STORAGE_KEY);
-    return saved ? JSON.parse(saved) : TEAM_MEMBERS_DATA;
+    console.log('open modal with id', id);
   }
 
   // --- Pagination helpers ---
@@ -235,139 +210,3 @@ export class DataTableComponent {
     }
   }
 }
-
-// const TEAM_MEMBERS_DATA: TeamMember[] = [
-//   {
-//     id: '1',
-//     name: 'Farouk Muhammed',
-//     avatar: 'FM',
-//     status: 'Active',
-//     role: 'Product Designer',
-//     email: 'olivia@untitledui.com',
-//     teams: ['Design', 'Product', 'Marketing'],
-//     extraTeams: 4,
-//   },
-//   {
-//     id: '2',
-//     name: 'Saliu Hammed',
-//     avatar: 'SH',
-//     status: 'Active',
-//     role: 'Product Designer',
-//     email: 'olivia@untitledui.com',
-//     teams: ['Design', 'Product', 'Marketing'],
-//     extraTeams: 4,
-//   },
-//   {
-//     id: '3',
-//     name: 'Ahmed Ibrahim',
-//     avatar: 'AI',
-//     status: 'Active',
-//     role: 'Frontend Developer',
-//     email: 'ahmed@untitledui.com',
-//     teams: ['Design', 'Product', 'Marketing'],
-//     extraTeams: 4,
-//   },
-// ];
-
-const TEAM_MEMBERS_DATA: TeamMember[] = [
-  {
-    id: '1',
-    name: 'Farouk Muhammed',
-    avatar: 'FM',
-    status: 'Active',
-    role: 'Product Designer',
-    email: 'olivia@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '2',
-    name: 'Saliu Hammed',
-    avatar: 'SH',
-    status: 'Active',
-    role: 'Product Designer',
-    email: 'olivia@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '3',
-    name: 'Farouk Muhammed',
-    avatar: 'FM',
-    status: 'Active',
-    role: 'Product Designer',
-    email: 'olivia@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '4',
-    name: 'Ahmed Ibrahim',
-    avatar: 'AI',
-    status: 'Active',
-    role: 'Frontend Developer',
-    email: 'ahmed@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '5',
-    name: 'Aisha Johnson',
-    avatar: 'AJ',
-    status: 'Active',
-    role: 'UX Designer',
-    email: 'aisha@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '6',
-    name: 'Chidi Okonkwo',
-    avatar: 'CO',
-    status: 'Active',
-    role: 'Backend Developer',
-    email: 'chidi@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '7',
-    name: 'Ngozi Adeyemi',
-    avatar: 'NA',
-    status: 'Active',
-    role: 'Product Manager',
-    email: 'ngozi@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '8',
-    name: 'Tunde Williams',
-    avatar: 'TW',
-    status: 'Active',
-    role: 'Data Analyst',
-    email: 'tunde@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '9',
-    name: 'Zainab Hassan',
-    avatar: 'ZH',
-    status: 'Active',
-    role: 'Marketing Manager',
-    email: 'zainab@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-  {
-    id: '10',
-    name: 'Emeka Nwosu',
-    avatar: 'EN',
-    status: 'Active',
-    role: 'DevOps Engineer',
-    email: 'emeka@untitledui.com',
-    teams: ['Design', 'Product', 'Marketing'],
-    extraTeams: 4,
-  },
-];
