@@ -8,7 +8,7 @@
         <button
           hlmBtn
           variant="outline"
-          class="text-[14px] leading-5 font-medium py-[10px] px-4 !bg-white border-[1px] border-solid border-[#D0D5DD] h-[40px] w-[102px]"
+          class="text-[14px] leading-5 font-medium py-[10px] px-4 !bg-white border-[1px] border-solid border-[#D0D5DD] h-[40px]"
           size="sm"
           (click)="addMember()"
         >
@@ -119,12 +119,11 @@
     hlmBtn
     variant="outline"
     size="sm"
+    class="!bg-white"
     [disabled]="!_table.getCanPreviousPage()"
     (click)="_table.previousPage()"
   >
-    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
+    <img src="/icons/arrow-left.svg" alt="" />
     Previous
   </button>
 
@@ -148,13 +147,12 @@
     hlmBtn
     variant="outline"
     size="sm"
+    class="!bg-white"
     [disabled]="!_table.getCanNextPage()"
     (click)="_table.nextPage()"
   >
     Next
-    <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-    </svg>
+    <img src="/icons/arrow-right.svg" alt="" />
   </button>
 </div>
 
