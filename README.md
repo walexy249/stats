@@ -12,6 +12,7 @@ This project uses the following technologies:
 - [Angular CLI](https://angular.dev/tools/cli)
 - [Tailwind](https://tailwindcss.com/)
 - [Spartan](https://www.spartan.ng/)
+- [ApexCharts](https://apexcharts.com/)
 
 ### Prerequisites
 
