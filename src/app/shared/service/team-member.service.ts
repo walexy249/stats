@@ -14,12 +14,26 @@ export class TeamMemberService {
     this.saveToStorage(this.members());
   }
 
-  addMember(member: TeamMember) {
-    this.members.update((list) => {
-      const updated = [...list, member];
-      this.saveToStorage(updated);
-      return updated;
-    });
+  addMember(member: { name: string; email: string; role: string }) {
+    const current = this.members();
+    const nextId = current.length ? Math.max(...current.map((m) => Number(m.id))) + 1 : 1;
+
+    const avatar = this.generateInitials(member.name);
+
+    const newMember: TeamMember = {
+      id: String(nextId),
+      name: member.name,
+      email: member.email,
+      role: member.role,
+      avatar,
+      teams: ['Design', 'Product', 'Marketing'],
+      extraTeams: 4,
+      status: 'Active',
+    };
+
+    const updated = [...current, newMember];
+    this.members.set(updated);
+    this.saveToStorage(updated);
   }
 
   updateMember(id: string, updatedMember: Partial<TeamMember>) {
@@ -49,6 +63,14 @@ export class TeamMemberService {
   private loadFromStorage(): TeamMember[] {
     const saved = localStorage.getItem(this.STORAGE_KEY);
     return saved ? JSON.parse(saved) : TEAM_MEMBERS_DATA;
+  }
+
+  private generateInitials(fullName: string): string {
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length === 1) {
+      return parts[0][0].toUpperCase();
+    }
+    return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase();
   }
 }
 

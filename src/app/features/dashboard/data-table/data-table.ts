@@ -25,6 +25,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { TeamMemberService } from '../../../shared/service/team-member.service';
 import { TeamMember } from '../../../shared/model/team-member.model';
+import { AddMember } from './modal/add-member/add-member';
 
 @Component({
   selector: 'app-data-table',
@@ -38,6 +39,7 @@ import { TeamMember } from '../../../shared/model/team-member.model';
     BrnSelectImports,
     HlmSelectImports,
     HlmTableImports,
+    AddMember,
   ],
   templateUrl: './data-table.html',
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -169,6 +171,8 @@ export class DataTableComponent {
   updateMember(id: string) {
     console.log('open modal with id', id);
   }
+
+  addMember() {}
 
   // --- Pagination helpers ---
   protected getPageNumbers(): (number | string)[] {
