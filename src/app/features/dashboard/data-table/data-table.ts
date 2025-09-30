@@ -154,16 +154,24 @@ export class DataTableComponent {
 
   data = signal<TeamMember[]>(this.loadFromStorage());
 
+  pagination = signal({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   protected readonly _table = createAngularTable<TeamMember>(() => ({
-    data: this.data(), // use signal instead of BehaviorSubject
+    data: this.data(),
     columns: this._columns,
     state: {
       sorting: this._sorting(),
-      pagination: this._pagination(),
+      pagination: this.pagination(),
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: (updater) => {
+      this.pagination.update((old) => (typeof updater === 'function' ? updater(old) : updater));
+    },
   }));
 
   // --- CRUD ---
