@@ -1,7 +1,12 @@
-import { Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-// import { lucideChevronDown, lucideTrash2, lucideEdit, lucideFilter } from '@ng-icons/lucide';
+import { BehaviorSubject } from 'rxjs';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
@@ -17,6 +22,7 @@ import {
   PaginationState,
   SortingState,
 } from '@tanstack/angular-table';
+import { CommonModule } from '@angular/common';
 
 export type TeamMember = {
   id: string;
@@ -33,19 +39,32 @@ export type TeamMember = {
   selector: 'app-data-table',
   standalone: true,
   imports: [
+    CommonModule,
     FlexRenderDirective,
     FormsModule,
     HlmButtonImports,
-    NgIcon,
     HlmIconImports,
     BrnSelectImports,
     HlmSelectImports,
     HlmTableImports,
   ],
-  // providers: [provideIcons({ lucideChevronDown, lucideTrash2, lucideEdit, lucideFilter })],
   templateUrl: './data-table.html',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent {
+  private cdr = inject(ChangeDetectorRef);
+
+  private readonly STORAGE_KEY = 'teamMembers';
+
+  // BehaviorSubject to hold data
+  private readonly _dataSubject = new BehaviorSubject<TeamMember[]>(this.loadFromStorage());
+
+  data$ = this._dataSubject.asObservable();
+
+  constructor() {
+    this.saveToStorage(this._dataSubject.value);
+  }
+
   protected readonly _availablePageSizes = [3, 10, 20, 50];
 
   protected readonly _columns: ColumnDef<TeamMember>[] = [
@@ -65,22 +84,14 @@ export class DataTableComponent {
         `;
       },
     },
-
     {
       accessorKey: 'status',
       id: 'status',
-      header: () => `
-        <div class="flex items-center gap-1">
-          <span>Status</span>
-          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      `,
+      header: 'Status',
       cell: (info) => {
         const status = info.getValue<string>();
         return `
-          <div class=" items-center gap-1.5 rounded-[16px] pt-[6px] pr-[9px] pb-[6px] pl-[6px] bg-[#ECFDF3] inline-flex">
+          <div class="items-center gap-1.5 rounded-[16px] pt-[6px] pr-[9px] pb-[6px] pl-[6px] bg-[#ECFDF3] inline-flex">
             <span class="h-2 w-2 rounded-full bg-green-500"></span>
             <span class="text-sm leading-4 text-[#027A48]">${status}</span>
           </div>
@@ -90,14 +101,7 @@ export class DataTableComponent {
     {
       accessorKey: 'role',
       id: 'role',
-      header: () => `
-        <div class="flex items-center gap-1">
-          <span>Role</span>
-          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-      `,
+      header: 'Role',
       cell: (info) => `<span class="text-sm text-gray-600">${info.getValue<string>()}</span>`,
     },
     {
@@ -137,21 +141,8 @@ export class DataTableComponent {
     },
     {
       id: 'actions',
-      header: '',
-      cell: () => `
-        <div class="flex items-center justify-end gap-1">
-          <button class="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-gray-100">
-            <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </button>
-          <button class="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-gray-100">
-            <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </button>
-        </div>
-      `,
+      header: 'Actions',
+      cell: (info) => info.row.original.id, // just pass the id
     },
   ];
 
@@ -161,26 +152,42 @@ export class DataTableComponent {
     pageIndex: 0,
   });
 
+  data = signal<TeamMember[]>(this.loadFromStorage());
+
   protected readonly _table = createAngularTable<TeamMember>(() => ({
-    data: TEAM_MEMBERS_DATA,
+    data: this.data(), // use signal instead of BehaviorSubject
     columns: this._columns,
     state: {
       sorting: this._sorting(),
       pagination: this._pagination(),
-    },
-    onSortingChange: (updater) => {
-      updater instanceof Function ? this._sorting.update(updater) : this._sorting.set(updater);
-    },
-    onPaginationChange: (updater) => {
-      updater instanceof Function
-        ? this._pagination.update(updater)
-        : this._pagination.set(updater);
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   }));
 
+  // --- CRUD ---
+  deleteMember(id: string) {
+    this.data.update((d) => d.filter((m) => m.id !== id));
+    this.saveToStorage(this.data());
+    console.log('deleted');
+  }
+
+  updateMember(id: string) {
+    console.log('Update logic here for member:', id);
+  }
+
+  // --- LocalStorage helpers ---
+  private saveToStorage(data: TeamMember[]) {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+  }
+
+  private loadFromStorage(): TeamMember[] {
+    const saved = localStorage.getItem(this.STORAGE_KEY);
+    return saved ? JSON.parse(saved) : TEAM_MEMBERS_DATA;
+  }
+
+  // --- Pagination helpers ---
   protected getPageNumbers(): (number | string)[] {
     const pageCount = this._table.getPageCount();
     const currentPage = this._table.getState().pagination.pageIndex + 1;
@@ -220,6 +227,39 @@ export class DataTableComponent {
     }
   }
 }
+
+// const TEAM_MEMBERS_DATA: TeamMember[] = [
+//   {
+//     id: '1',
+//     name: 'Farouk Muhammed',
+//     avatar: 'FM',
+//     status: 'Active',
+//     role: 'Product Designer',
+//     email: 'olivia@untitledui.com',
+//     teams: ['Design', 'Product', 'Marketing'],
+//     extraTeams: 4,
+//   },
+//   {
+//     id: '2',
+//     name: 'Saliu Hammed',
+//     avatar: 'SH',
+//     status: 'Active',
+//     role: 'Product Designer',
+//     email: 'olivia@untitledui.com',
+//     teams: ['Design', 'Product', 'Marketing'],
+//     extraTeams: 4,
+//   },
+//   {
+//     id: '3',
+//     name: 'Ahmed Ibrahim',
+//     avatar: 'AI',
+//     status: 'Active',
+//     role: 'Frontend Developer',
+//     email: 'ahmed@untitledui.com',
+//     teams: ['Design', 'Product', 'Marketing'],
+//     extraTeams: 4,
+//   },
+// ];
 
 const TEAM_MEMBERS_DATA: TeamMember[] = [
   {

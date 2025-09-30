@@ -55,10 +55,34 @@
           <tr class="hover:bg-[#F9FAFB]" hlmTr>
             @for (cell of row.getVisibleCells(); track $index) {
             <td hlmTd class="py-4 px-6">
-              <ng-container
+              <!-- <ng-container
                 *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cellContent"
               >
                 <div [innerHTML]="cellContent"></div>
+              </ng-container> -->
+
+              <ng-container
+                *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cellContent"
+              >
+                <!-- Special handling for actions column -->
+                <ng-container *ngIf="cell.column.id === 'actions'; else normalCell">
+                  <div class="flex items-center justify-end gap-1">
+                    <button
+                      class="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-gray-100"
+                      (click)="deleteMember(cellContent)"
+                    >
+                      🗑️
+                    </button>
+                    <button
+                      class="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-gray-100"
+                    >
+                      ✏️
+                    </button>
+                  </div>
+                </ng-container>
+                <ng-template #normalCell>
+                  <div [innerHTML]="cellContent"></div>
+                </ng-template>
               </ng-container>
             </td>
             }
