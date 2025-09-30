@@ -33,7 +33,7 @@
           @for (headerGroup of _table.getHeaderGroups(); track headerGroup.id) {
           <tr hlmTr>
             @for (header of headerGroup.headers; track header.id) {
-            <th hlmTh>
+            <th class="py-4 px-6" hlmTh>
               @if (!header.isPlaceholder) {
               <ng-container
                 *flexRender="
@@ -52,9 +52,9 @@
         </thead>
         <tbody hlmTBody class="w-full">
           @for (row of _table.getRowModel().rows; track row.id) {
-          <tr hlmTr>
+          <tr class="hover:bg-[#F9FAFB]" hlmTr>
             @for (cell of row.getVisibleCells(); track $index) {
-            <td hlmTd>
+            <td hlmTd class="py-4 px-6">
               <ng-container
                 *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cellContent"
               >

@@ -65,6 +65,7 @@ export class DataTableComponent {
         `;
       },
     },
+
     {
       accessorKey: 'status',
       id: 'status',
@@ -79,9 +80,9 @@ export class DataTableComponent {
       cell: (info) => {
         const status = info.getValue<string>();
         return `
-          <div class="flex items-center gap-1.5">
+          <div class=" items-center gap-1.5 rounded-[16px] pt-[6px] pr-[9px] pb-[6px] pl-[6px] bg-[#ECFDF3] inline-flex">
             <span class="h-2 w-2 rounded-full bg-green-500"></span>
-            <span class="text-sm text-gray-700">${status}</span>
+            <span class="text-sm leading-4 text-[#027A48]">${status}</span>
           </div>
         `;
       },
@@ -113,14 +114,15 @@ export class DataTableComponent {
         const teams = info.getValue<string[]>();
         const extraTeams = info.row.original.extraTeams;
         const colors: Record<string, string> = {
-          Design: 'bg-purple-50 text-purple-700 border-purple-200',
-          Product: 'bg-blue-50 text-blue-700 border-blue-200',
-          Marketing: 'bg-pink-50 text-pink-700 border-pink-200',
+          Design: 'bg-[#F9F5FF] text-[#6941C6]',
+          Product: 'bg-[#EFF8FF] text-[#175CD3]',
+          Marketing: 'bg-[#EEF4FF] text-[#3538CD]',
         };
+
         const badges = teams
           .map(
             (team) =>
-              `<span class="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${
+              `<span class="inline-flex items-center border px-2 text-xs font-medium rounded-[16px] pt-[2px] pr-[8px] pb-[2px] pl-[8px] ${
                 colors[team] || 'bg-gray-50 text-gray-700 border-gray-200'
               }">${team}</span>`
           )
