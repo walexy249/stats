@@ -1,88 +1,39 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmInputImports } from '@spartan-ng/helm/input';
-
+import { Component, ViewChild } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
   ApexXAxis,
   ApexYAxis,
-  ApexTitleSubtitle,
   ApexLegend,
+  ApexDataLabels,
   ApexStroke,
   ApexGrid,
+  ApexFill,
   NgApexchartsModule,
 } from 'ng-apexcharts';
-import { DataGrowthChartComponent } from './data-growth-chart/data-growth-chart';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
-  title: ApexTitleSubtitle;
   legend: ApexLegend;
+  dataLabels: ApexDataLabels;
   stroke: ApexStroke;
   grid: ApexGrid;
+  fill: ApexFill;
 };
 
-interface Stat {
-  title: string;
-  value: string;
-  change: string;
-  trend: 'up' | 'down';
-  subtitle: string;
-}
-
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css'],
-
-  imports: [
-    CommonModule,
-    HlmButtonImports,
-    HlmInputImports,
-    NgApexchartsModule,
-    DataGrowthChartComponent,
-  ],
+  selector: 'app-data-growth-chart',
+  templateUrl: './data-growth-chart.html',
+  styleUrls: ['./data-growth-chart.css'],
+  imports: [CommonModule, NgApexchartsModule],
 })
-export class DashboardComponent {
-  // Add component logic here
+export class DataGrowthChartComponent {
+  // public chartOptions: Partial<ChartOptions>;
   public chartOptions: any;
-
-  stats: Stat[] = [
-    {
-      title: 'Total Revenue',
-      value: '$1,200,000',
-      change: '+18%',
-      trend: 'up',
-      subtitle: 'Compared to last year',
-    },
-    {
-      title: 'Active Users',
-      value: '2500',
-      change: '+5%',
-      trend: 'up',
-      subtitle: 'Compared to last month',
-    },
-    {
-      title: 'Conversion Rate',
-      value: '4.2%',
-      change: '+0.3%',
-      trend: 'up',
-      subtitle: 'Compared to last month',
-    },
-    {
-      title: 'New Signups',
-      value: '8200',
-      change: '-5.3%',
-      trend: 'down',
-      subtitle: 'Compared to last month',
-    },
-  ];
 
   constructor() {
     this.chartOptions = {
