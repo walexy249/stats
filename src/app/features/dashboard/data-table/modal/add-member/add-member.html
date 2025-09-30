@@ -39,7 +39,7 @@
       </div>
     </form>
     <hlm-dialog-footer>
-      <button hlmBtn type="submit" (click)="onSubmit()">
+      <button hlmBtn type="submit" [disabled]="form.invalid" (click)="onSubmit()">
         {{ type === 'add' ? 'Submit' : 'Save changes' }}
       </button>
     </hlm-dialog-footer>
