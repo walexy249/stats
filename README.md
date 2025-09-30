@@ -8,7 +8,7 @@ This project uses the following technologies:
 - [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/) (version 24.0)
 - [npm](https://www.npmjs.com/)
-- [RxJS](https://rxjs.dev/) (if applicable)
+- [RxJS](https://rxjs.dev/)
 - [Angular CLI](https://angular.dev/tools/cli)
 - [Tailwind](https://tailwindcss.com/)
 - [Spartan](https://www.spartan.ng/)
@@ -23,7 +23,7 @@ This project uses the following technologies:
 2. Download the installer for your operating system.
 3. Run the installer and follow the instructions.
 
-### Setting Up a Project
+### Setting Up the Project
 
 Install the Angular CLI globally:
 
