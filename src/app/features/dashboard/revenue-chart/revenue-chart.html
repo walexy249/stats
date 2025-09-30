@@ -1,5 +1,5 @@
 <div
-  class="p-6 shadow-sm bg-white rounded-[8px] border-[1px] border-solid border-[#D9 w-full max-w-sm relative"
+  class="p-6 shadow-sm bg-white rounded-[8px] border-[1px] border-solid border-[#D9 w-full max-w-sm relative h-full"
 >
   <h2 class="text-gray-800 font-semibold mb-3">Revenue Contribution</h2>
 
@@ -26,20 +26,23 @@
 
   <!-- Breakdown -->
   <div class="mt-4 text-sm">
-    <div class="flex justify-between border-b py-2">
-      <span class="text-gray-700">Sales training</span>
-      <div class="text-right">
-        <p class="text-gray-800 font-medium">$384.93</p>
-        <p class="text-green-600 text-xs">+ $232.19</p>
+    <div class="grid grid-cols-3">
+      <div class="justify-self-start"></div>
+      <div class="justify-self-center text-[#1A1A1A66] text-sm font-medium leading-5">
+        This month
       </div>
+      <div class="justify-self-end text-[#1A1A1A66] text-sm font-medium leading-5">Total</div>
+    </div>
+    <div class="grid grid-cols-3 border-b py-2 items-end">
+      <span class="justify-self-start text-[#757575] text-sm leading-5">Sales training</span>
+      <p class="justify-self-center text-[#1E1E1E] text-sm leading-5 font-medium">$384.93</p>
+      <p class="justify-self-end text-[#14AE5C] text-sm leading-5">+ $232.19</p>
     </div>
 
-    <div class="flex justify-between py-2">
-      <span class="text-gray-700">Other expenses</span>
-      <div class="text-right">
-        <p class="text-gray-800 font-medium">$200</p>
-        <p class="text-red-600 text-xs">- $25</p>
-      </div>
+    <div class="grid grid-cols-3 py-2 items-end">
+      <span class="justify-self-start text-[#757575] text-sm leading-5">Other expenses</span>
+      <p class="justify-self-center text-[#1E1E1E] text-sm leading-5 font-medium">$200</p>
+      <p class="justify-self-end text-[#EC221F] text-sm leading-5">- $25</p>
     </div>
   </div>
 </div>
