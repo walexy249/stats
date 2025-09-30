@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
@@ -43,7 +42,7 @@ import { AddMember } from './modal/add-member/add-member';
     AddMember,
   ],
   templateUrl: './data-table.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
@@ -133,7 +132,7 @@ export class DataTableComponent {
     {
       id: 'actions',
       header: 'Actions',
-      cell: (info) => info.row.original.id, // just pass the id
+      cell: (info) => info.row.original.id,
     },
   ];
 
@@ -165,15 +164,8 @@ export class DataTableComponent {
     },
   }));
 
-  // --- CRUD ---
-
-  // --- delegate actions to service ---
   deleteMember(id: string) {
     this.teamService.deleteMember(id);
-  }
-
-  updateMember(id: string) {
-    console.log('open modal with id', id);
   }
 
   addMember() {

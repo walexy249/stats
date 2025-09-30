@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
@@ -24,6 +24,7 @@ export type ChartOptions = {
   templateUrl: './revenue-chart.html',
   styleUrls: ['./revenue-chart.css'],
   imports: [CommonModule, NgApexchartsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RevenueChartComponent {
   @ViewChild('chart') chart!: ChartComponent;
@@ -33,7 +34,7 @@ export class RevenueChartComponent {
 
   constructor() {
     this.chartOptions = {
-      series: [20, 20, 20, 20, 20], // decorative equal slices
+      series: [20, 20, 20, 20, 20],
       chart: {
         type: 'donut',
         height: 280,
@@ -53,7 +54,7 @@ export class RevenueChartComponent {
         enabled: false,
       },
       legend: {
-        show: false, // 👈 hides the series legend
+        show: false,
       },
       responsive: [
         {

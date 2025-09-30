@@ -54,7 +54,6 @@ interface Stat {
   ],
 })
 export class DashboardComponent {
-  // Add component logic here
   public chartOptions: any;
 
   stats: Stat[] = [
@@ -103,10 +102,10 @@ export class DashboardComponent {
       chart: {
         type: 'bar',
         height: 400,
-        stacked: true, // ✅ stack them instead of side-by-side
+        stacked: true,
         toolbar: { show: false },
       },
-      colors: ['#2563EB', '#E5EDFF'], // Active Users (blue), Revenue (light blue)
+      colors: ['#2563EB', '#E5EDFF'],
       plotOptions: {
         bar: {
           columnWidth: '50%',

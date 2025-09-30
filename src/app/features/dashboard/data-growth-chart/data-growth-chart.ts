@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -30,9 +30,9 @@ export type ChartOptions = {
   templateUrl: './data-growth-chart.html',
   styleUrls: ['./data-growth-chart.css'],
   imports: [CommonModule, NgApexchartsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGrowthChartComponent {
-  // public chartOptions: Partial<ChartOptions>;
   public chartOptions: any;
 
   constructor() {
@@ -50,10 +50,10 @@ export class DataGrowthChartComponent {
       chart: {
         type: 'bar',
         height: 400,
-        stacked: true, // ✅ stack them instead of side-by-side
+        stacked: true,
         toolbar: { show: false },
       },
-      colors: ['#2563EB', '#E5EDFF'], // Active Users (blue), Revenue (light blue)
+      colors: ['#2563EB', '#E5EDFF'],
       plotOptions: {
         bar: {
           columnWidth: '50%',
