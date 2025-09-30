@@ -17,6 +17,7 @@ import {
 } from 'ng-apexcharts';
 import { DataGrowthChartComponent } from './data-growth-chart/data-growth-chart';
 import { RevenueChartComponent } from './revenue-chart/revenue-chart';
+import { DataTableComponent } from './data-table/data-table';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -49,6 +50,7 @@ interface Stat {
     NgApexchartsModule,
     DataGrowthChartComponent,
     RevenueChartComponent,
+    DataTableComponent,
   ],
 })
 export class DashboardComponent {

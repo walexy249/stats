@@ -21,6 +21,18 @@
       ],
       "@spartan-ng/helm/input": [
         "./libs/ui/ui-input-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/table": [
+        "./libs/ui/ui-table-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/icon": [
+        "./libs/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/select": [
+        "./libs/ui/ui-select-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/menu": [
+        "./libs/ui/ui-menu-helm/src/index.ts"
       ]
     }
   },
