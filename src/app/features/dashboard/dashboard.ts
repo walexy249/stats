@@ -16,6 +16,7 @@ import {
   NgApexchartsModule,
 } from 'ng-apexcharts';
 import { DataGrowthChartComponent } from './data-growth-chart/data-growth-chart';
+import { RevenueChartComponent } from './revenue-chart/revenue-chart';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -47,6 +48,7 @@ interface Stat {
     HlmInputImports,
     NgApexchartsModule,
     DataGrowthChartComponent,
+    RevenueChartComponent,
   ],
 })
 export class DashboardComponent {

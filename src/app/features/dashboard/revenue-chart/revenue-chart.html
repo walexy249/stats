@@ -1,0 +1,45 @@
+<div
+  class="p-6 shadow-sm bg-white rounded-[8px] border-[1px] border-solid border-[#D9 w-full max-w-sm relative"
+>
+  <h2 class="text-gray-800 font-semibold mb-3">Revenue Contribution</h2>
+
+  <!-- Donut Chart -->
+  <div class="relative flex justify-center items-center">
+    <apx-chart
+      #chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [stroke]="chartOptions.stroke"
+      [colors]="chartOptions.colors"
+      [plotOptions]="chartOptions.plotOptions"
+      [dataLabels]="chartOptions.dataLabels"
+      [responsive]="chartOptions.responsive"
+      [legend]="chartOptions.legend"
+    ></apx-chart>
+
+    <!-- Center Text Overlay -->
+    <div class="absolute text-center">
+      <p class="text-gray-500 text-sm">Monthly budget</p>
+      <p class="text-xl font-semibold">${{ monthlyBudget }}</p>
+    </div>
+  </div>
+
+  <!-- Breakdown -->
+  <div class="mt-4 text-sm">
+    <div class="flex justify-between border-b py-2">
+      <span class="text-gray-700">Sales training</span>
+      <div class="text-right">
+        <p class="text-gray-800 font-medium">$384.93</p>
+        <p class="text-green-600 text-xs">+ $232.19</p>
+      </div>
+    </div>
+
+    <div class="flex justify-between py-2">
+      <span class="text-gray-700">Other expenses</span>
+      <div class="text-right">
+        <p class="text-gray-800 font-medium">$200</p>
+        <p class="text-red-600 text-xs">- $25</p>
+      </div>
+    </div>
+  </div>
+</div>
