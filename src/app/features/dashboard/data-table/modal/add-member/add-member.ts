@@ -36,6 +36,8 @@ export class AddMember {
 
   type!: any;
   id: any;
+  heading!: string;
+  subtext!: string;
   form: FormGroup = this.fb.group({
     name: [null, [Validators.required]],
     email: [null, [Validators.required]],
@@ -43,6 +45,7 @@ export class AddMember {
   });
   openSheet(type: 'add' | 'edit', id?: any) {
     this.type = type;
+    this.setModalTitle();
     if (this.type === 'edit') {
       this.id = id;
       const member = this.teamMemberService.getMemberById(id);
@@ -55,8 +58,17 @@ export class AddMember {
     this.modalRef.open();
   }
 
+  setModalTitle() {
+    if (this.type === 'add') {
+      this.heading = 'Add member';
+      this.subtext = 'Fill in the option to add a new member';
+    } else {
+      this.heading = 'Edit member';
+      this.subtext = 'Update member record';
+    }
+  }
+
   onSubmit() {
-    console.log(this.form.value);
     if (this.type === 'add') {
       this.teamMemberService.addMember(this.form.value);
     } else {

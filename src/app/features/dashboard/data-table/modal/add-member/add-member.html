@@ -1,9 +1,8 @@
 <hlm-dialog #modalRef (stateChanged)="onSheetChange($event)">
-  <!-- <button id="edit-profile" brnDialogTrigger hlmBtn variant="outline">Open Dialog</button> -->
   <hlm-dialog-content class="sm:max-w-[425px] w-[425px] bg-white" *brnDialogContent="let ctx">
     <hlm-dialog-header>
-      <h3 hlmDialogTitle>Add member</h3>
-      <p hlmDialogDescription>Fill in the option to add a new member</p>
+      <h3 hlmDialogTitle>{{ heading }}</h3>
+      <p hlmDialogDescription>{{ subtext }}</p>
     </hlm-dialog-header>
     <form [formGroup]="form" class="grid gap-4">
       <div class="grid gap-3">
@@ -22,7 +21,6 @@
       </div>
 
       <div class="w-full">
-        <!-- <label hlmLabel for="username" class="text-right mb-3">Select Role</label> -->
         <brn-select class="inline-block w-full" formControlName="role" placeholder="Select Role">
           <hlm-select-trigger class="w-full">
             <hlm-select-value />
@@ -40,8 +38,9 @@
       </div>
     </form>
     <hlm-dialog-footer>
-      <button hlmBtn variant="outline" brnDialogClose>Cancel</button>
-      <button hlmBtn type="submit" (click)="onSubmit()">Save changes</button>
+      <button hlmBtn type="submit" (click)="onSubmit()">
+        {{ type === 'add' ? 'Submit' : 'Save changes' }}
+      </button>
     </hlm-dialog-footer>
   </hlm-dialog-content>
 </hlm-dialog>
